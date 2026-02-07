@@ -2,23 +2,42 @@
 let myChart = null;
 
 // Set max date to today
-document.getElementById('startDate').max = new Date().toISOString().split('T')[0];
+const today = new Date().toISOString().split('T')[0];
+document.getElementById('startDate').max = today;
+document.getElementById('endDate').max = today;
 
 // Update yield display
 document.getElementById('yieldRate').addEventListener('input', function() {
     document.getElementById('yieldDisplay').textContent = this.value + '%';
 });
 
+// Toggle end date visibility
+function toggleEndDate() {
+    const endDateInput = document.getElementById('endDate');
+    const isChecked = document.getElementById('endDateToggle').checked;
+    endDateInput.style.display = isChecked ? 'block' : 'none';
+    if (!isChecked) {
+        endDateInput.value = '';
+    }
+}
+
 // Main calculation function
 async function calculateYield() {
     // Get inputs
     const startDate = document.getElementById('startDate').value;
+    const endDateInput = document.getElementById('endDate').value;
+    const endDate = endDateInput || new Date().toISOString().split('T')[0];
     const btcAmount = parseFloat(document.getElementById('btcAmount').value);
     const yieldRate = parseFloat(document.getElementById('yieldRate').value) / 100;
 
     // Validation
     if (!startDate || !btcAmount || btcAmount <= 0) {
         alert('Please fill in all fields with valid values');
+        return;
+    }
+
+    if (new Date(endDate) <= new Date(startDate)) {
+        alert('End date must be after start date');
         return;
     }
 
@@ -29,7 +48,7 @@ async function calculateYield() {
 
     try {
         // Fetch historical BTC prices
-        const prices = await fetchBTCPrices(startDate);
+        const prices = await fetchBTCPrices(startDate, endDate);
         
         // Calculate paths
         const result = calculatePaths(prices, btcAmount, yieldRate, startDate);
@@ -43,20 +62,46 @@ async function calculateYield() {
     }
 }
 
-// Fetch BTC prices from CoinGecko
-async function fetchBTCPrices(startDate) {
+// Fetch BTC prices from CryptoCompare
+async function fetchBTCPrices(startDate, endDate) {
     const startTimestamp = Math.floor(new Date(startDate).getTime() / 1000);
-    const endTimestamp = Math.floor(Date.now() / 1000);
+    const endTimestamp = Math.floor(new Date(endDate).getTime() / 1000);
     
-    const url = `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart/range?vs_currency=usd&from=${startTimestamp}&to=${endTimestamp}`;
+    const daysDiff = Math.ceil((endTimestamp - startTimestamp) / 86400);
+    const prices = [];
     
-    const response = await fetch(url);
-    if (!response.ok) {
-        throw new Error('Failed to fetch BTC prices');
+    // CryptoCompare limit is 2000 days per request, so we might need multiple calls
+    let currentEndTs = endTimestamp;
+    let remaining = daysDiff;
+    
+    while (remaining > 0) {
+        const limit = Math.min(remaining, 2000);
+        const url = `https://min-api.cryptocompare.com/data/v2/histoday?fsym=BTC&tsym=USD&limit=${limit}&toTs=${currentEndTs}`;
+        
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Failed to fetch BTC prices from CryptoCompare');
+        }
+        
+        const data = await response.json();
+        if (data.Response === 'Error') {
+            throw new Error(data.Message || 'CryptoCompare API error');
+        }
+        
+        // Convert CryptoCompare format to [timestamp_ms, price] format
+        const batch = data.Data.Data.map(item => [item.time * 1000, item.close]);
+        prices.unshift(...batch.reverse());
+        
+        remaining -= limit;
+        currentEndTs = data.Data.Data[0].time - 86400; // Go back one more day
     }
     
-    const data = await response.json();
-    return data.prices; // Array of [timestamp, price]
+    // Filter to exact range and remove duplicates
+    const filteredPrices = prices.filter(([ts]) => 
+        ts >= startTimestamp * 1000 && ts <= endTimestamp * 1000
+    );
+    
+    return filteredPrices;
 }
 
 // Calculate holding vs yield paths

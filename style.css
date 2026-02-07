@@ -56,6 +56,12 @@ h1 {
     font-size: 1.1em;
 }
 
+.input-group input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
 .input-group input[type="date"],
 .input-group input[type="number"] {
     width: 100%;

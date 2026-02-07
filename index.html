@@ -16,8 +16,15 @@
 
         <div class="calculator-form" id="inputForm">
             <div class="input-group">
-                <label for="startDate">When did you buy?</label>
+                <label for="startDate">Pick a start date</label>
                 <input type="date" id="startDate" min="2010-07-18" max="" required>
+            </div>
+
+            <div class="input-group">
+                <label for="endDateToggle">
+                    <input type="checkbox" id="endDateToggle" onchange="toggleEndDate()"> Custom end date?
+                </label>
+                <input type="date" id="endDate" min="2010-07-18" max="" style="display: none; margin-top: 10px;">
             </div>
 
             <div class="input-group">
@@ -26,8 +33,8 @@
             </div>
 
             <div class="input-group">
-                <label for="yieldRate">Annual Yield %: <span id="yieldDisplay">5.0%</span></label>
-                <input type="range" id="yieldRate" min="3" max="10" step="0.5" value="5">
+                <label for="yieldRate">Annual Yield %: <span id="yieldDisplay">8.0%</span></label>
+                <input type="range" id="yieldRate" min="4" max="12" step="0.5" value="8">
             </div>
 
             <button class="btn-primary" onclick="calculateYield()">Calculate My Missed Yield</button>
@@ -73,7 +80,7 @@
         </div>
 
         <footer>
-            <p>Built for <a href="https://ixs.finance" target="_blank">IXS Finance</a> | Data: CoinGecko API</p>
+            <p>Built for <a href="https://ixs.finance" target="_blank">IXS Finance</a> | Data: CryptoCompare API</p>
             <p class="disclaimer">Not financial advice. Historical performance doesn't guarantee future results.</p>
         </footer>
     </div>
