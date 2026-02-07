@@ -68,40 +68,29 @@ async function fetchBTCPrices(startDate, endDate) {
     const endTimestamp = Math.floor(new Date(endDate).getTime() / 1000);
     
     const daysDiff = Math.ceil((endTimestamp - startTimestamp) / 86400);
-    const prices = [];
     
-    // CryptoCompare limit is 2000 days per request, so we might need multiple calls
-    let currentEndTs = endTimestamp;
-    let remaining = daysDiff;
+    // CryptoCompare returns data in chronological order from toTs going backwards
+    // We need to fetch enough days and then filter to our exact range
+    const limit = Math.min(daysDiff + 1, 2000);
+    const url = `https://min-api.cryptocompare.com/data/v2/histoday?fsym=BTC&tsym=USD&limit=${limit}&toTs=${endTimestamp}`;
     
-    while (remaining > 0) {
-        const limit = Math.min(remaining, 2000);
-        const url = `https://min-api.cryptocompare.com/data/v2/histoday?fsym=BTC&tsym=USD&limit=${limit}&toTs=${currentEndTs}`;
-        
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error('Failed to fetch BTC prices from CryptoCompare');
-        }
-        
-        const data = await response.json();
-        if (data.Response === 'Error') {
-            throw new Error(data.Message || 'CryptoCompare API error');
-        }
-        
-        // Convert CryptoCompare format to [timestamp_ms, price] format
-        const batch = data.Data.Data.map(item => [item.time * 1000, item.close]);
-        prices.unshift(...batch.reverse());
-        
-        remaining -= limit;
-        currentEndTs = data.Data.Data[0].time - 86400; // Go back one more day
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error('Failed to fetch BTC prices from CryptoCompare');
     }
     
-    // Filter to exact range and remove duplicates
-    const filteredPrices = prices.filter(([ts]) => 
-        ts >= startTimestamp * 1000 && ts <= endTimestamp * 1000
-    );
+    const data = await response.json();
+    if (data.Response === 'Error') {
+        throw new Error(data.Message || 'CryptoCompare API error');
+    }
     
-    return filteredPrices;
+    // Convert to [timestamp_ms, price] format and ensure chronological order
+    const prices = data.Data.Data
+        .map(item => [item.time * 1000, item.close])
+        .filter(([ts]) => ts >= startTimestamp * 1000 && ts <= endTimestamp * 1000)
+        .sort((a, b) => a[0] - b[0]); // Ensure ascending order by timestamp
+    
+    return prices;
 }
 
 // Calculate holding vs yield paths
@@ -206,16 +195,24 @@ function displayResults(result) {
     
     // Display summary stats
     const startHolding = result.holdingPath[0];
-    const todayHolding = result.holdingPath[result.holdingPath.length - 1];
-    const todayYield = result.yieldPath[result.yieldPath.length - 1];
-    const totalMissed = todayYield.usd - todayHolding.usd;
+    const endHolding = result.holdingPath[result.holdingPath.length - 1];
+    const endYield = result.yieldPath[result.yieldPath.length - 1];
+    const totalMissed = endYield.usd - endHolding.usd;
+    
+    // Update labels based on whether using custom end date
+    const endDateInput = document.getElementById('endDate').value;
+    const endLabel = endDateInput ? `End (${formatDate(endHolding.date)})` : 'Today';
+    
+    document.getElementById('startLabel').textContent = `Start (${formatDate(startHolding.date)}):`;
+    document.getElementById('endLabelHold').textContent = `${endLabel} (Just Holding):`;
+    document.getElementById('endLabelYield').textContent = `${endLabel} (With Yield):`;
     
     document.getElementById('startValue').textContent = 
         `${startHolding.btc.toFixed(4)} BTC = $${formatNumber(startHolding.usd)}`;
     document.getElementById('todayHoldValue').textContent = 
-        `${todayHolding.btc.toFixed(4)} BTC = $${formatNumber(todayHolding.usd)}`;
+        `${endHolding.btc.toFixed(4)} BTC = $${formatNumber(endHolding.usd)}`;
     document.getElementById('todayYieldValue').textContent = 
-        `${todayYield.btc.toFixed(4)} BTC = $${formatNumber(todayYield.usd)}`;
+        `${endYield.btc.toFixed(4)} BTC = $${formatNumber(endYield.usd)}`;
     document.getElementById('totalMissed').textContent = 
         `$${formatNumber(totalMissed)}`;
 }
