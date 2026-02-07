@@ -6,11 +6,12 @@
     <title>BTC Yield Calculator - How Much Did You Miss?</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="logo">IXS<sup>®</sup></div>
+            <div class="logo">IXS<sup>&reg;</sup></div>
             <h1>BTC Yield Calculator</h1>
             <p class="subtitle">How much yield did you miss by just holding?</p>
         </header>
@@ -38,17 +39,38 @@
                 <input type="range" id="yieldRate" min="4" max="12" step="0.5" value="8">
             </div>
 
+            <div class="input-group">
+                <label for="projectionToggle">
+                    <input type="checkbox" id="projectionToggle" onchange="toggleProjection()"> Project Forward? (Experimental)
+                </label>
+                <div id="projectionInputs" class="projection-inputs" style="display: none;">
+                    <label for="projectionEndDate">Projection End Date</label>
+                    <input type="date" id="projectionEndDate" min="" max="">
+                    <label for="projectionModel">Projection Model</label>
+                    <select id="projectionModel">
+                        <option value="conservative">Conservative (+10% annually)</option>
+                        <option value="planb">Plan B S2F Model</option>
+                        <option value="flat">Flat (no price change)</option>
+                    </select>
+                </div>
+            </div>
+
             <button class="btn-primary" onclick="calculateYield()">Calculate My Missed Yield</button>
         </div>
 
         <div class="results" id="results" style="display: none;">
+            <div class="disclaimer-box" id="disclaimerBox" style="display: none;" role="alert">
+                <p class="disclaimer-title">Future Projections - Not Financial Advice</p>
+                <p class="disclaimer-text" id="disclaimerText">Projections are based on historical patterns. Actual results may vary significantly. Bitcoin is volatile. This calculator does not constitute investment advice.</p>
+            </div>
+
             <div class="chart-container">
                 <canvas id="yieldChart"></canvas>
             </div>
 
             <div class="ath-callout" id="athCallout" style="display: none;">
-                <p class="ath-title">📍 At Bitcoin's Peak</p>
-                <p class="ath-detail" id="athDetail"></p>
+                <p class="ath-title" id="athTitle"></p>
+                <div id="athList"></div>
             </div>
 
             <div class="summary-stats">
@@ -65,19 +87,24 @@
                     <span class="stat-value stat-highlight" id="todayYieldValue"></span>
                 </div>
                 <div class="stat-row total-missed">
-                    <span class="stat-label">Total Missed:</span>
+                    <span class="stat-label" id="totalMissedLabel">Total Missed:</span>
                     <span class="stat-value missed-amount" id="totalMissed"></span>
                 </div>
             </div>
 
+            <div class="share-section">
+                <button class="btn-share" onclick="shareToX()">Share on X</button>
+                <button class="btn-download" onclick="downloadImage()">Download Image</button>
+            </div>
+
             <div class="cta-buttons">
-                <button class="btn-primary" onclick="window.location.href='https://ixs.finance'">Start Earning with IXS →</button>
+                <button class="btn-primary" onclick="window.location.href='https://ixs.finance'">Start Earning with IXS &rarr;</button>
                 <button class="btn-secondary" onclick="resetCalculator()">Calculate Again</button>
             </div>
         </div>
 
         <div class="loading" id="loading" style="display: none;">
-            <p>⏳ Calculating your missed opportunity...</p>
+            <p>Calculating your missed opportunity...</p>
         </div>
 
         <footer>
