@@ -6,10 +6,10 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1a2332 0%, #0d3d3d 100%);
     min-height: 100vh;
     padding: 20px;
-    color: #333;
+    color: #ffffff;
 }
 
 .container {
@@ -26,22 +26,37 @@ header {
     margin-bottom: 40px;
 }
 
+.logo {
+    font-size: 2em;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+.logo sup {
+    font-size: 0.5em;
+    vertical-align: super;
+}
+
 h1 {
     font-size: 2.5em;
-    color: #2d3748;
+    color: #ffffff;
     margin-bottom: 10px;
 }
 
 .subtitle {
     font-size: 1.2em;
-    color: #718096;
+    color: #a0aec0;
 }
 
 .calculator-form {
-    background: #f7fafc;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
     padding: 30px;
     border-radius: 12px;
     margin-bottom: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .input-group {
@@ -52,7 +67,7 @@ h1 {
     display: block;
     font-weight: 600;
     margin-bottom: 8px;
-    color: #2d3748;
+    color: #ffffff;
     font-size: 1.1em;
 }
 
@@ -66,23 +81,26 @@ h1 {
 .input-group input[type="number"] {
     width: 100%;
     padding: 12px;
-    border: 2px solid #e2e8f0;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
     font-size: 1em;
+    color: #ffffff;
     transition: border-color 0.3s;
 }
 
 .input-group input[type="date"]:focus,
 .input-group input[type="number"]:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #00B8A9;
+    background: rgba(255, 255, 255, 0.15);
 }
 
 .input-group input[type="range"] {
     width: 100%;
     height: 8px;
     border-radius: 5px;
-    background: #e2e8f0;
+    background: rgba(255, 255, 255, 0.2);
     outline: none;
     -webkit-appearance: none;
 }
@@ -93,7 +111,7 @@ h1 {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #667eea;
+    background: #00B8A9;
     cursor: pointer;
 }
 
@@ -101,20 +119,20 @@ h1 {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background: #667eea;
+    background: #00B8A9;
     cursor: pointer;
     border: none;
 }
 
 #yieldDisplay {
-    color: #667eea;
+    color: #00B8A9;
     font-weight: bold;
 }
 
 .btn-primary {
     width: 100%;
     padding: 16px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #00B8A9 0%, #00a896 100%);
     color: white;
     border: none;
     border-radius: 8px;
@@ -126,15 +144,15 @@ h1 {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 20px rgba(0, 184, 169, 0.4);
 }
 
 .btn-secondary {
     width: 100%;
     padding: 16px;
-    background: white;
-    color: #667eea;
-    border: 2px solid #667eea;
+    background: transparent;
+    color: #00B8A9;
+    border: 2px solid #00B8A9;
     border-radius: 8px;
     font-size: 1.1em;
     font-weight: 600;
@@ -144,7 +162,7 @@ h1 {
 }
 
 .btn-secondary:hover {
-    background: #f7fafc;
+    background: rgba(0, 184, 169, 0.1);
 }
 
 .results {
@@ -158,8 +176,8 @@ h1 {
 }
 
 .ath-callout {
-    background: #fff5f5;
-    border-left: 4px solid #fc8181;
+    background: rgba(243, 156, 18, 0.1);
+    border-left: 4px solid #F39C12;
     padding: 20px;
     border-radius: 8px;
     margin-bottom: 30px;
@@ -168,27 +186,29 @@ h1 {
 .ath-title {
     font-weight: 600;
     font-size: 1.2em;
-    color: #c53030;
+    color: #F39C12;
     margin-bottom: 8px;
 }
 
 .ath-detail {
-    color: #2d3748;
+    color: #ffffff;
     font-size: 1.1em;
 }
 
 .summary-stats {
-    background: #f7fafc;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
     padding: 25px;
     border-radius: 12px;
     margin-bottom: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .stat-row {
     display: flex;
     justify-content: space-between;
     padding: 12px 0;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .stat-row:last-child {
@@ -197,26 +217,26 @@ h1 {
 
 .stat-label {
     font-weight: 600;
-    color: #4a5568;
+    color: #a0aec0;
 }
 
 .stat-value {
     font-weight: 700;
-    color: #2d3748;
+    color: #ffffff;
 }
 
 .stat-highlight {
-    color: #38a169;
+    color: #00B8A9;
 }
 
 .total-missed {
     margin-top: 15px;
     padding-top: 15px;
-    border-top: 2px solid #667eea;
+    border-top: 2px solid #00B8A9;
 }
 
 .missed-amount {
-    color: #e53e3e;
+    color: #F39C12;
     font-size: 1.5em;
 }
 
@@ -230,20 +250,20 @@ h1 {
     text-align: center;
     padding: 60px;
     font-size: 1.3em;
-    color: #667eea;
+    color: #00B8A9;
 }
 
 footer {
     text-align: center;
     margin-top: 40px;
     padding-top: 20px;
-    border-top: 1px solid #e2e8f0;
-    color: #718096;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: #a0aec0;
     font-size: 0.9em;
 }
 
 footer a {
-    color: #667eea;
+    color: #00B8A9;
     text-decoration: none;
     font-weight: 600;
 }
@@ -255,7 +275,7 @@ footer a:hover {
 .disclaimer {
     margin-top: 10px;
     font-size: 0.8em;
-    color: #a0aec0;
+    color: #718096;
 }
 
 /* Mobile Responsive */
