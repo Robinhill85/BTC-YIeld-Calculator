@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTC Yield Calculator - How Much Did You Miss?</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💰 BTC Yield Calculator</h1>
+            <p class="subtitle">How much yield did you miss by just holding?</p>
+        </header>
+
+        <div class="calculator-form" id="inputForm">
+            <div class="input-group">
+                <label for="startDate">When did you buy?</label>
+                <input type="date" id="startDate" min="2010-07-18" max="" required>
+            </div>
+
+            <div class="input-group">
+                <label for="btcAmount">How much BTC?</label>
+                <input type="number" id="btcAmount" min="0.001" max="1000" step="0.01" value="1.0" required>
+            </div>
+
+            <div class="input-group">
+                <label for="yieldRate">Annual Yield %: <span id="yieldDisplay">5.0%</span></label>
+                <input type="range" id="yieldRate" min="3" max="10" step="0.5" value="5">
+            </div>
+
+            <button class="btn-primary" onclick="calculateYield()">Calculate My Missed Yield</button>
+        </div>
+
+        <div class="results" id="results" style="display: none;">
+            <div class="chart-container">
+                <canvas id="yieldChart"></canvas>
+            </div>
+
+            <div class="ath-callout" id="athCallout" style="display: none;">
+                <p class="ath-title">📍 At Bitcoin's Peak</p>
+                <p class="ath-detail" id="athDetail"></p>
+            </div>
+
+            <div class="summary-stats">
+                <div class="stat-row">
+                    <span class="stat-label">Start:</span>
+                    <span class="stat-value" id="startValue"></span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Today (Just Holding):</span>
+                    <span class="stat-value" id="todayHoldValue"></span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Today (With Yield):</span>
+                    <span class="stat-value stat-highlight" id="todayYieldValue"></span>
+                </div>
+                <div class="stat-row total-missed">
+                    <span class="stat-label">Total Missed:</span>
+                    <span class="stat-value missed-amount" id="totalMissed"></span>
+                </div>
+            </div>
+
+            <div class="cta-buttons">
+                <button class="btn-primary" onclick="window.location.href='https://ixs.finance'">Start Earning with IXS →</button>
+                <button class="btn-secondary" onclick="resetCalculator()">Calculate Again</button>
+            </div>
+        </div>
+
+        <div class="loading" id="loading" style="display: none;">
+            <p>⏳ Calculating your missed opportunity...</p>
+        </div>
+
+        <footer>
+            <p>Built for <a href="https://ixs.finance" target="_blank">IXS Finance</a> | Data: CoinGecko API</p>
+            <p class="disclaimer">Not financial advice. Historical performance doesn't guarantee future results.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
