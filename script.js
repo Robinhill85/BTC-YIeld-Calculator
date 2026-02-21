@@ -833,7 +833,7 @@ function drawMiniChart(ctx, result, x, y, w, h) {
     }
 }
 
-function shareToX() {
+async function shareToX() {
     if (!lastResult) return;
 
     const isProjection = lastResult.projectionEnabled && lastResult.projectedHoldingPath && lastResult.projectedHoldingPath.length > 0;
@@ -847,11 +847,24 @@ function shareToX() {
     }
     const totalMissed = endYield.usd - endHolding.usd;
 
+    // Generate and download image so user can attach it to the tweet
+    try {
+        const imageDataUrl = await generateShareImage();
+        if (imageDataUrl) {
+            const link = document.createElement('a');
+            link.download = `btc-yield-missed-${Math.round(totalMissed)}.png`;
+            link.href = imageDataUrl;
+            link.click();
+        }
+    } catch {
+        // Non-fatal — proceed to open X anyway
+    }
+
     let tweetText;
     if (isProjection) {
         tweetText = `If I start earning yield on my Bitcoin now, I could gain $${formatNumber(totalMissed)} over ${lastResult.projectedHoldingPath.length} months.\n\nProject yours:`;
     } else {
-        tweetText = `I left $${formatNumber(totalMissed)} on the table by not earning yield on my Bitcoin.\n\nCalculate yours:`;
+        tweetText = `I left $${formatNumber(totalMissed)} on the table by not earning yield on my Bitcoin. 😬\n\nCalculate yours:`;
     }
 
     const text = encodeURIComponent(tweetText);
