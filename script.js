@@ -849,11 +849,13 @@ function shareToX() {
     const startPoint = lastResult.holdingPath[0];
 
     // Build share URL — Twitter crawls this, sees OG meta tags, renders the image automatically
+    // Use short date format (no commas) to keep URL clean
+    const shortDate = (date) => date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
     const shareParams = new URLSearchParams({
         missed: totalMissed,
         btc: startPoint.btc.toFixed(2),
-        start: formatDate(startPoint.date),
-        end: formatDate(endHolding.date),
+        start: shortDate(startPoint.date),
+        end: shortDate(endHolding.date),
         projection: isProjection ? '1' : '0',
     });
     const shareUrl = `https://btc-yield-calculator.vercel.app/api/share?${shareParams.toString()}`;
