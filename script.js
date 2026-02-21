@@ -833,7 +833,7 @@ function drawMiniChart(ctx, result, x, y, w, h) {
     }
 }
 
-async function shareToX() {
+function shareToX() {
     if (!lastResult) return;
 
     const isProjection = lastResult.projectionEnabled && lastResult.projectedHoldingPath && lastResult.projectedHoldingPath.length > 0;
@@ -845,30 +845,28 @@ async function shareToX() {
         endHolding = lastResult.holdingPath[lastResult.holdingPath.length - 1];
         endYield = lastResult.yieldPath[lastResult.yieldPath.length - 1];
     }
-    const totalMissed = endYield.usd - endHolding.usd;
+    const totalMissed = Math.round(endYield.usd - endHolding.usd);
+    const startPoint = lastResult.holdingPath[0];
 
-    // Generate and download image so user can attach it to the tweet
-    try {
-        const imageDataUrl = await generateShareImage();
-        if (imageDataUrl) {
-            const link = document.createElement('a');
-            link.download = `btc-yield-missed-${Math.round(totalMissed)}.png`;
-            link.href = imageDataUrl;
-            link.click();
-        }
-    } catch {
-        // Non-fatal — proceed to open X anyway
-    }
+    // Build share URL — Twitter crawls this, sees OG meta tags, renders the image automatically
+    const shareParams = new URLSearchParams({
+        missed: totalMissed,
+        btc: startPoint.btc.toFixed(2),
+        start: formatDate(startPoint.date),
+        end: formatDate(endHolding.date),
+        projection: isProjection ? '1' : '0',
+    });
+    const shareUrl = `https://btc-yield-calculator.vercel.app/api/share?${shareParams.toString()}`;
 
     let tweetText;
     if (isProjection) {
-        tweetText = `If I start earning yield on my Bitcoin now, I could gain $${formatNumber(totalMissed)} over ${lastResult.projectedHoldingPath.length} months.\n\nProject yours:`;
+        tweetText = `If I start earning yield on my Bitcoin now, I could gain $${formatNumber(totalMissed)}. 📈\n\nProject yours:`;
     } else {
         tweetText = `I left $${formatNumber(totalMissed)} on the table by not earning yield on my Bitcoin. 😬\n\nCalculate yours:`;
     }
 
     const text = encodeURIComponent(tweetText);
-    const url = encodeURIComponent('https://btc-yield-calculator.vercel.app?utm_source=twitter');
+    const url = encodeURIComponent(shareUrl);
     const xUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
     window.open(xUrl, '_blank', 'width=600,height=400');
 }
