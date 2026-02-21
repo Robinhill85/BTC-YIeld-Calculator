@@ -15,8 +15,8 @@ export default function handler(req) {
     : `I left $${formattedMissed} on the table by not earning yield on my ${btc} BTC`;
 
   const description = 'Calculate how much yield you missed on your Bitcoin — powered by IXS Finance.';
-  const calculatorUrl = 'https://btc-yield-calculator.vercel.app';
-  const ogImageUrl = `https://btc-yield-calculator.vercel.app/api/og?${params.replace(/&/g, '&amp;')}`;
+  const calculatorUrl = 'https://www.btcyieldcalculator.com';
+  const ogImageUrl = `https://www.btcyieldcalculator.com/api/og?${params.replace(/&/g, '&amp;')}`;
 
   const html = `<!DOCTYPE html>
 <html lang="en">

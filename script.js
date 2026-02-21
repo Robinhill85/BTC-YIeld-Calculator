@@ -769,7 +769,7 @@ async function generateShareImage() {
     // URL
     ctx.fillStyle = '#F7931A';
     ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, sans-serif';
-    ctx.fillText('btc-yield-calculator.vercel.app', 40, 610);
+    ctx.fillText('www.btcyieldcalculator.com', 40, 610);
 
     return canvas.toDataURL('image/png');
 }
@@ -858,7 +858,7 @@ function shareToX() {
         end: shortDate(endHolding.date),
         projection: isProjection ? '1' : '0',
     });
-    const shareUrl = `https://btc-yield-calculator.vercel.app/api/share?${shareParams.toString()}`;
+    const shareUrl = `https://www.btcyieldcalculator.com/api/share?${shareParams.toString()}`;
 
     let tweetText;
     if (isProjection) {

@@ -33,7 +33,7 @@ export default function handler(req) {
       // Top: Logo + URL
       e('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
         e('div', { style: { color: '#ffffff', fontSize: '36px', fontWeight: 800, letterSpacing: '4px' } }, 'IXS\u00AE'),
-        e('div', { style: { color: '#555555', fontSize: '22px' } }, 'btc-yield-calculator.vercel.app'),
+        e('div', { style: { color: '#555555', fontSize: '22px' } }, 'www.btcyieldcalculator.com'),
       ),
 
       // Middle: Main stat
