@@ -72,7 +72,7 @@ export default function handler(req) {
             padding: '12px 28px',
             borderRadius: '8px',
           },
-        }, 'ixs.finance/btc-real-yield'),
+        }, 'www.btcyieldcalculator.com'),
       ),
     ),
     { width: 1200, height: 630 }
