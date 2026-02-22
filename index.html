@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BTC Yield Calculator - How Much Did You Miss?</title>
+    <title>BTC Yield Calculator — How Much Bitcoin Yield Did You Miss?</title>
+    <meta name="description" content="Calculate how much yield you missed by just holding Bitcoin. Enter your BTC amount and start date to see compounding returns vs holding. Free BTC yield calculator.">
+    <link rel="canonical" href="https://www.btcyieldcalculator.com">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/png" href="assets/bitcoin.png">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="BTC Yield Calculator — How much did you miss?">
-    <meta property="og:description" content="Enter your BTC amount and start date to see how much yield you left on the table.">
+    <meta property="og:title" content="BTC Yield Calculator — How Much Bitcoin Yield Did You Miss?">
+    <meta property="og:description" content="Calculate how much yield you missed by just holding Bitcoin. See compounding returns vs holding over any time period.">
     <meta property="og:image" content="https://www.btcyieldcalculator.com/api/og?generic=1">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -18,11 +20,73 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="BTC Yield Calculator — How much did you miss?">
-    <meta name="twitter:description" content="Enter your BTC amount and start date to see how much yield you left on the table.">
+    <meta name="twitter:title" content="BTC Yield Calculator — How Much Bitcoin Yield Did You Miss?">
+    <meta name="twitter:description" content="Calculate how much yield you missed by just holding Bitcoin. See compounding returns vs holding.">
     <meta name="twitter:image" content="https://www.btcyieldcalculator.com/api/og?generic=1">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebSite",
+                "name": "BTC Yield Calculator",
+                "url": "https://www.btcyieldcalculator.com"
+            },
+            {
+                "@type": "WebApplication",
+                "name": "BTC Yield Calculator",
+                "url": "https://www.btcyieldcalculator.com",
+                "applicationCategory": "FinanceApplication",
+                "operatingSystem": "Web",
+                "description": "Calculate how much yield you missed by just holding Bitcoin. Compare compounding returns vs holding over any time period.",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "USD"
+                }
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "How does the BTC Yield Calculator work?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Enter your Bitcoin amount, a start date, and an annual yield percentage. The calculator fetches historical BTC prices and compares two scenarios: just holding your Bitcoin vs earning compound yield on it. You'll see a chart and summary showing exactly how much extra value you could have earned."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "What is Bitcoin yield?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Bitcoin yield is the return you earn on your BTC holdings through lending, staking, or DeFi protocols. Instead of just holding Bitcoin in a wallet, you can put it to work and earn additional BTC over time through compound interest."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "What yield rate should I use?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Typical Bitcoin yield rates range from 3% to 10% annually depending on the platform and strategy. Conservative lending platforms offer 3-5%, while DeFi protocols may offer higher rates with additional risk. The calculator defaults to 8% so you can adjust based on your preferred strategy."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Is this financial advice?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "No. This calculator is for educational and illustrative purposes only. Historical performance does not guarantee future results. Bitcoin is volatile and earning yield involves additional risks. Always do your own research before making investment decisions."
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
 </head>
 <body>
     <div class="container">
